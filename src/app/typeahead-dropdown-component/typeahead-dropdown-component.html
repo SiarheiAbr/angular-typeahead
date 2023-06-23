@@ -1,0 +1,11 @@
+<div class="wrapper">
+    <div class="conversation">
+        <input type="text" [formControl]="searchControl" placeholder="Search..." (mousedown)="onInputMouseDown()">
+        <div *ngIf="showOptions" class="options">
+            <div *ngFor="let item of items$ | async" class="option" (click)="onOptionSelected(item)">{{ item }}</div>
+        </div>
+        <!-- <ul>
+          <li *ngFor="let item of items$ | async">{{ item }}</li>
+        </ul> -->
+    </div>
+</div>
