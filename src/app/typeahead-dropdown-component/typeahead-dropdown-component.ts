@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, switchMap, toArray, takeUntil, startWith } from 'rxjs/operators';
@@ -8,12 +8,13 @@ import { DataService, DataSourceService, TEntity } from '../services/data-servic
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { OnDestroy } from '@angular/core';
+import { TypeaheadDropdownOptionsComponent } from './typeahead-dropdown-options.component/typeahead-dropdown-options.component';
 //import { DefaultValueAccessor } from '@angular/forms';
 
 @Component({
   selector: 'app-typeahead-dropdown',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, TypeaheadDropdownOptionsComponent],
   templateUrl: './typeahead-dropdown-component.html',
   styleUrls: ['./typeahead-dropdown-component.scss']
 })
@@ -22,12 +23,24 @@ export class TypeaheadDropdownComponent implements OnInit, OnDestroy {
 
     private onDestroy = new Subject();
     searchControl = new FormControl('');
-    searchTerm$: Observable<string | null> | undefined;
+    searchTerm$!: Observable<string | null>;
     //items$: Observable<string[]> | undefined;
-    items$: Observable<string[]> | undefined;
+    // items$: Observable<string[]> | undefined;
     showOptions: boolean = false;
+
+    @ViewChild('searchInput') searchInput!: ElementRef;
+    @ViewChild('options') options!: ElementRef;
     
-    //constructor() {}
+    constructor(private renderer: Renderer2) {      
+      this.renderer.listen('window', 'click',(e:Event)=>{
+           /**
+            * Hide options by click outside of dropdown container.
+            */
+          if(e.target !== this.searchInput.nativeElement && (this.options == null || e.target !== this.options.nativeElement)) {
+              this.showOptions = false;
+          }
+      });
+    }
 
     ngOnInit() {
           this.searchTerm$ = this.searchControl.valueChanges
@@ -48,10 +61,10 @@ export class TypeaheadDropdownComponent implements OnInit, OnDestroy {
     //     distinctUntilChanged()
     // ); 
 
-      this.items$ = this.searchTerm$
-        .pipe(
-            switchMap(search => this.itemsFn.search(search))        
-        );
+      // this.items$ = this.searchTerm$
+      //   .pipe(
+      //       switchMap(search => this.itemsFn.search(search))        
+      //   );
     }
 
     onInputMouseDown() {
@@ -62,7 +75,7 @@ export class TypeaheadDropdownComponent implements OnInit, OnDestroy {
     }
 
     onOptionSelected(option: string) {
-      this.searchControl.setValue(option);      
+      this.searchControl.setValue(option);
       this.showOptions = false;
     }
 

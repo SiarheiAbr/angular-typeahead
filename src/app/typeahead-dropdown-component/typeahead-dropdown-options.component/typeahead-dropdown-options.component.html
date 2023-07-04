@@ -1,0 +1,3 @@
+<div class="options">
+    <div *ngFor="let item of items$ | async" class="option" (click)="onOptionSelected(item)">{{ item }}</div>
+</div>
