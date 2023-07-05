@@ -12,5 +12,5 @@ import { DataService } from './services/data-service';
 })
 export class AppComponent {
   title = 'Simple Typeahead Dropdown';
-  itemsFn = new DataService();
+  itemsFn = new DataService().search;
 }

@@ -19,7 +19,7 @@ import { TypeaheadDropdownOptionsComponent } from './typeahead-dropdown-options.
   styleUrls: ['./typeahead-dropdown-component.scss']
 })
 export class TypeaheadDropdownComponent implements OnInit, OnDestroy {
-    @Input() itemsFn!: DataSourceService;
+    @Input() itemsFn!: (search: string | null) => Observable<string[]>;
 
     private onDestroy = new Subject();
     searchControl = new FormControl('');

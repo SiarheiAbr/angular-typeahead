@@ -14,7 +14,7 @@ import { DataSourceService } from "src/app/services/data-service";
   })
   export class TypeaheadDropdownOptionsComponent implements OnInit {
     @Input() searchTerm$!: Observable<string | null>;
-    @Input() itemsFn!: DataSourceService;
+    @Input() itemsFn!: (search: string | null) => Observable<string[]>;
 
     items$: Observable<string[]> | undefined;
 
@@ -23,7 +23,7 @@ import { DataSourceService } from "src/app/services/data-service";
     ngOnInit() {
         this.items$ = this.searchTerm$
         .pipe(
-            switchMap(search => this.itemsFn.search(search))        
+            switchMap(search => this.itemsFn(search))        
         );
     }
 
