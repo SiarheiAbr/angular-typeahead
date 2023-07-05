@@ -1,14 +1,20 @@
 <div class="wrapper">
-    <div class="conversation">
-        <input type="text" [formControl]="searchControl" placeholder="Search..." (keydown)="onInputMouseDown()" (mousedown)="onInputMouseDown()" #searchInput>
-        <!-- <div *ngIf="showOptions" class="options">
-            <div *ngFor="let item of items$ | async" class="option" (click)="onOptionSelected(item)">{{ item }}</div>
-        </div> -->
-        <typeahead-dropdown-options *ngIf="showOptions" 
-                                    [searchTerm$]="searchTerm$" 
-                                    [itemsFn]="itemsFn"
-                                    (itemSelected)="onOptionSelected($event)"
-                                    #options>
-        </typeahead-dropdown-options>
-    </div>
+  <div class="dropdown-container">
+    <input
+      type="text"
+      [formControl]="searchControl"
+      placeholder="Search..."
+      (keydown)="onInputMouseDown()"
+      (mousedown)="onInputMouseDown()"
+      #searchInput
+    />
+    <typeahead-dropdown-options
+      *ngIf="showOptions"
+      [searchTerm$]="searchTerm$"
+      [itemsFn]="itemsFn"
+      (itemSelected)="onOptionSelected($event)"
+      #options
+    >
+    </typeahead-dropdown-options>
+  </div>
 </div>

@@ -3,7 +3,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { Observable } from "rxjs";
 import { switchMap } from 'rxjs/operators';
-import { DataSourceService } from "src/app/services/data-service";
 
 @Component({
     selector: 'typeahead-dropdown-options',
